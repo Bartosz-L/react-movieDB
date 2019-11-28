@@ -7,13 +7,14 @@ import Spinner from 'components/elements/Spinner';
 import LoadMoreBtn from 'components/elements/LoadMoreBtn';
 import { useHomeFetch } from 'hooks/useHomeFetch';
 import {
-  API_URL,
-  API_KEY,
   IMAGE_BASE_URL,
   BACKDROP_SIZE,
   POSTER_SIZE,
+  SEARCH_BASE_URL,
+  POPULAR_BASE_URL,
 } from 'config';
 import NoImage from 'images/no_image.jpg';
+import { end } from 'worker-farm';
 
 const Home = () => {
   const [
@@ -26,11 +27,19 @@ const Home = () => {
   ] = useHomeFetch();
   const [searchTerm, setSearchTerm] = useState('');
 
+  const handleSearchMovies = searchParam => {
+    const endpoint = searchParam
+      ? SEARCH_BASE_URL + searchParam
+      : POPULAR_BASE_URL;
+
+    setSearchTerm(searchParam);
+    fetchMovies(endpoint);
+  };
+
   const handleLoadMoreMovies = () => {
-    const searchEndpoint = `${API_URL}search/movie?api_key=${API_KEY}&query=${searchTerm}&page=${currentPage +
+    const searchEndpoint = `${SEARCH_BASE_URL}${searchTerm}&page=${currentPage +
       1}`;
-    const popularEndpoint = `${API_URL}movie/popular?api_key=${API_KEY}&page=${currentPage +
-      1}`;
+    const popularEndpoint = `${POPULAR_BASE_URL}&page=${currentPage + 1}`;
 
     const endpoint = searchTerm ? searchEndpoint : popularEndpoint;
 
@@ -42,12 +51,15 @@ const Home = () => {
 
   return (
     <>
-      <HeroImage
-        image={`${IMAGE_BASE_URL}${BACKDROP_SIZE}${heroImage.backdrop_path}`}
-        title={heroImage.original_title}
-        text={heroImage.overview}
-      />
-      <SearchBar />
+      {!searchTerm && (
+        <HeroImage
+          image={`${IMAGE_BASE_URL}${BACKDROP_SIZE}${heroImage.backdrop_path}`}
+          title={heroImage.original_title}
+          text={heroImage.overview}
+        />
+      )}
+
+      <SearchBar callback={handleSearchMovies} />
       <Grid header={searchTerm ? 'Search Result' : 'Popular Movies'}>
         {movies.map(movie => {
           return (
