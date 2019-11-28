@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { API_URL } from 'config';
-
-const API_KEY = process.env.REACT_APP_API_KEY;
+import { useState, useEffect } from 'react';
+import { API_URL, API_KEY } from 'config';
 
 export const useHomeFetch = () => {
   const [state, setState] = useState({ movies: [] });
@@ -12,15 +10,21 @@ export const useHomeFetch = () => {
     setIsError(false);
     setLoading(true);
 
+    const isLoadMore = endpoint.search('page');
+
     try {
       const response = await fetch(endpoint);
       const result = await response.json();
 
       setState(prevState => ({
         ...prevState,
-        movies: [...result.results],
+        movies:
+          isLoadMore !== -1
+            ? [...prevState.movies, ...result.results]
+            : [...result.results],
         heroImage: prevState.heroImage || result.results[0],
-        currentPage: result.total_pages,
+        currentPage: result.page,
+        totalPages: result.total_pages,
       }));
     } catch (error) {
       setIsError(true);

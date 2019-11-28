@@ -6,7 +6,13 @@ import MovieThumb from 'components/elements/MovieThumb';
 import Spinner from 'components/elements/Spinner';
 import LoadMoreBtn from 'components/elements/LoadMoreBtn';
 import { useHomeFetch } from 'hooks/useHomeFetch';
-import { IMAGE_BASE_URL, BACKDROP_SIZE, POSTER_SIZE } from 'config';
+import {
+  API_URL,
+  API_KEY,
+  IMAGE_BASE_URL,
+  BACKDROP_SIZE,
+  POSTER_SIZE,
+} from 'config';
 import NoImage from 'images/no_image.jpg';
 
 const Home = () => {
@@ -19,6 +25,17 @@ const Home = () => {
     fetchMovies,
   ] = useHomeFetch();
   const [searchTerm, setSearchTerm] = useState('');
+
+  const handleLoadMoreMovies = () => {
+    const searchEndpoint = `${API_URL}search/movie?api_key=${API_KEY}&query=${searchTerm}&page=${currentPage +
+      1}`;
+    const popularEndpoint = `${API_URL}movie/popular?api_key=${API_KEY}&page=${currentPage +
+      1}`;
+
+    const endpoint = searchTerm ? searchEndpoint : popularEndpoint;
+
+    fetchMovies(endpoint);
+  };
 
   if (isError) return <div>Something went wrong...</div>;
   if (!movies[0]) return <Spinner />;
@@ -48,9 +65,10 @@ const Home = () => {
           );
         })}
       </Grid>
-      <MovieThumb />
-      <Spinner />
-      <LoadMoreBtn />
+      {loading && <Spinner />}
+      {currentPage < totalPages && !loading && (
+        <LoadMoreBtn text="Load More" callback={handleLoadMoreMovies} />
+      )}
     </>
   );
 };
