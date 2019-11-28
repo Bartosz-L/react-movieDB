@@ -8,8 +8,6 @@ import LoadMoreBtn from 'components/elements/LoadMoreBtn';
 import { useHomeFetch } from 'hooks/useHomeFetch';
 import { IMAGE_BASE_URL, BACKDROP_SIZE } from 'config';
 
-const API_KEY = process.env.REACT_APP_API_KEY;
-
 const Home = () => {
   const [{ state, loading, isError }, fetchMovies] = useHomeFetch();
 
