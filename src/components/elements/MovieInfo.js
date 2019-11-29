@@ -21,7 +21,7 @@ const MovieInfo = ({ movie }) => (
         <h1>{movie.title}</h1>
         <h3>PLOT</h3>
         <p>{movie.overview}</p>
-        <div className="rating-director">
+        <div className="rating-director-year">
           <div>
             <h3>IMDB RATING</h3>
             <div className="score">{movie.vote_average}</div>
@@ -31,6 +31,10 @@ const MovieInfo = ({ movie }) => (
             {movie.directors.map(director => (
               <p key={director.credit_id}>{director.name}</p>
             ))}
+          </div>
+          <div className="year">
+            <h3>RELEASE DATE</h3>
+            <p>{movie.release_date}</p>
           </div>
         </div>
       </div>

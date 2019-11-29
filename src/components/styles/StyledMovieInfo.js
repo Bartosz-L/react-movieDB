@@ -3,7 +3,9 @@ import { IMAGE_BASE_URL, BACKDROP_SIZE } from '../../config';
 
 export const StyledMovieInfo = styled.div`
   background: ${props =>
-    props.backdrop ? `url('${IMAGE_BASE_URL}${BACKDROP_SIZE}${props.backdrop}')` : '#000'};
+    props.backdrop
+      ? `url('${IMAGE_BASE_URL}${BACKDROP_SIZE}${props.backdrop}')`
+      : '#000'};
   background-size: cover !important;
   background-position: center !important;
   width: 100%;
@@ -58,7 +60,7 @@ export const StyledMovieInfo = styled.div`
     }
   }
 
-  .rating-director {
+  .rating-director-year {
     display: flex;
     justify-content: flex-start;
   }
@@ -76,7 +78,8 @@ export const StyledMovieInfo = styled.div`
     margin: 0px 0 0 0;
   }
 
-  .director {
+  .director,
+  .year {
     margin: 0 0 0 40px;
 
     p {
