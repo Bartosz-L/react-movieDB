@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import NoImage from 'images/no_image.jpg';
 import { IMAGE_BASE_URL, POSTER_SIZE } from 'config';
 import { StyledMovieInfo } from 'components/styles/StyledMovieInfo';
@@ -15,6 +16,7 @@ const MovieInfo = ({ movie }) => (
               : NoImage
           }
           clickable={false}
+          movieId={movie.id}
         />
       </div>
       <div className="movieinfo-text">
@@ -41,5 +43,9 @@ const MovieInfo = ({ movie }) => (
     </div>
   </StyledMovieInfo>
 );
+
+MovieInfo.propTypes = {
+  movie: PropTypes.objectOf(PropTypes.any).isRequired,
+};
 
 export default MovieInfo;

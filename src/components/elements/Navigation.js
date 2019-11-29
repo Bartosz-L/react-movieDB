@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { StyledNavigation } from 'components/styles/StyledNavigation';
 
@@ -14,6 +15,10 @@ const Navigation = ({ movieTitle }) => {
       </div>
     </StyledNavigation>
   );
+};
+
+Navigation.propTypes = {
+  movieTitle: PropTypes.string.isRequired,
 };
 
 export default Navigation;
